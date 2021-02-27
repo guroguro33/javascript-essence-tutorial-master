@@ -54,7 +54,8 @@ obj.prop();
 
 ## スコープ
 
-- グローバルスコープ = window オブジェクト
+### グローバルスコープ = window オブジェクト
+
 - 一般的にはスクリプトスコープ(let や const 定義)もグローバルスコープと呼ばれる
 - 関数スコープ
 
@@ -64,7 +65,8 @@ function a() {
 }
 ```
 
-- ブロックスコープ
+### ブロックスコープ
+
 - let や const は有効になるが、var だと有効にならない
 
 ```javascript
@@ -73,15 +75,53 @@ if (true) {
 }
 ```
 
-- レキシカルスコープ（静的スコープ）
+### レキシカルスコープ（静的スコープ）
+
 - コードを書く場所によって参照できる変数が変わるスコープ
 - 同じスコープ内や属する（親）スコープの変数は参照できるが、別スコープ内の変数は参照できない
 
-- スコープチェーン
+### スコープチェーン
+
 - スコープ内にスコープが入っている場合など
 - 同じスコープ内の変数を取りにいき、ない場合は上位スコープの変数を取りに行く。
 - var を使うと、ホイスティングがあるので注意。
 
-- クロージャ
+### クロージャ
+
 - 関数内に関数を内包したもの
 - カプセル化され、外部から変更できなくなるメリット
+
+### 即時関数()
+
+- 関す定義と同時に一度だけ実行される関数
+
+```javascript
+let result = (function (仮引数) {
+  return 戻り値;
+})(実引数);
+
+let c = (function () {
+  console.log('called');
+
+  let privateVal = 0;
+  let publicVal = 10; // 一度だけ初期化される
+
+  function privateFn() {
+    console.log('privateFn is called');
+  }
+  function publicFn() {
+    console.log('publicFn is called' + publicVal++);
+  }
+
+  return {
+    // publicVal: publicVal, 同名の場合、下記のように省略可能
+    publicVal,
+    // publicFn: publicFn これも省略可能
+    publicFn,
+  };
+})();
+console.log(c.publicVal);
+// console.log(c.privateVal); 呼べない
+c.publicFn();
+c.publicFn(); // publicValが増えていく
+```
