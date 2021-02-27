@@ -33,7 +33,6 @@ console.log(c.publicVal);
 c.publicFn();
 c.publicFn();
 c.publicFn();
-c.publicFn();
 // c.privateFn(); 呼べない
 // console.log(c);
 
