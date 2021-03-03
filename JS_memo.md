@@ -125,3 +125,13 @@ console.log(c.publicVal);
 c.publicFn();
 c.publicFn(); // publicValが増えていく
 ```
+
+## 変数
+
+### let,const と var の違い
+
+| タイプ | 再宣言 | 再代入 | スコープ | 初期化（巻き上げ） |
+| ------ | ------ | ------ | -------- | ------------------ |
+| let    | ❌     | ⭕️    | ブロック | ❌                 |
+| const  | ❌     | ❌     | ブロック | ❌                 |
+| var    | ⭕️    | ⭕️    | 関数     | undefined          |
