@@ -14,7 +14,7 @@ let obj = {
 
 function minus(obj, val) {
     let prop1 = obj.prop1;
-    prop1 = prop1 - val;
+    obj.prop1 = prop1 - val;
 }
 
 minus(obj, 1);
@@ -31,8 +31,8 @@ console.log(obj.prop1);
 
 
 function double(obj) {
-    let { prop1 } = obj;
-    prop1 = prop1 * 2;
+    let obj2 = obj;
+    obj2.prop1 = obj2.prop1 * 2;
 }
 
 double(obj);
@@ -58,6 +58,8 @@ function fn({ prop2 }) {
 }
 obj = fn(obj);
 // console.log(obj.prop2.prop3);
+// 1 不正解
+// 3 obj = { prop2: {prop3: 3}}
 
 /**
  * 問題４：
@@ -70,3 +72,4 @@ function through (obj) {
 
 const obj2 = through(obj);
 // console.log(obj === obj2);
+// true
