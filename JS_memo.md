@@ -200,3 +200,12 @@ let { prop1 } = c;
 prop1.prop2 = 1;
 console.log(c, prop1); // cのprop2は同じ参照のままのため、1になっている
 ```
+
+## 関数
+
+- 「関数は実行可能なオブジェクトである」
+
+### arguments
+
+- 関数内で自動的に定義され、中には実引数が入っている
+- arguments[0]や arguments[1]で呼び出せる
