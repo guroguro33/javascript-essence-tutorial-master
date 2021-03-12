@@ -209,3 +209,38 @@ console.log(c, prop1); // cのprop2は同じ参照のままのため、1にな�
 
 - 関数内で自動的に定義され、中には実引数が入っている
 - arguments[0]や arguments[1]で呼び出せる
+
+### コールバック関数
+
+- 関数内で呼び出す関数
+
+```javascript
+function hello(name) {
+  console.log('hello ' + name);
+}
+
+function bye() {
+  console.log('bye');
+}
+
+//cbがコールバック関数
+function fn(cb) {
+  cb('Tom');
+}
+
+// 実行
+fn(hello);
+fn(bye);
+// オブジェクトであるため、引数にも入れられる
+fn(function () {
+  console.log('callBack');
+});
+```
+
+### this
+
+- 呼び出し元のオブジェクトへの参照を保持するキーワード
+- オブジェクトのメソッドとして実行される場合
+  - this -> 呼び出し元オブジェクト
+- 関数として実行される場合
+  - this -> グローバルオブジェクト
