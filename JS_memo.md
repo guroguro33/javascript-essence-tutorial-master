@@ -244,3 +244,49 @@ fn(function () {
   - this -> 呼び出し元オブジェクト
 - 関数として実行される場合
   - this -> グローバルオブジェクト
+
+### bind
+
+- bind によって this や引数を固定した新しい関数を作成
+  - bind による this の束縛と言う
+- オブジェクト.関数().bind(実行元, 引数);
+
+```javascript
+window.name = 'John';
+
+const person = {
+  name: 'Tom',
+  hello: function () {
+    console.log('Hello ' + this.name);
+  },
+};
+person.hello(); // Hello Tom
+
+// bind(person)で、helloの実行元をpersonとしている
+const helloTom = person.hello.bind(person);
+
+function fn(ref) {
+  ref();
+}
+
+fn(helloTom); // Hello Tom
+
+// bindの使用例
+function a() {
+  console.log('hello ' + this.name);
+}
+
+const b = a.bind({ name: 'Tim' });
+
+b(); // hello Tim
+
+function c(name) {
+  console.log('bye ' + name);
+}
+
+// 第１引数はthisの値、第２引数は関数cの引数を束縛できる
+const d = c.bind(null, 'Taro');
+
+// 引数Bobを指定しても、束縛されたTaroが実行される
+d('Bob'); // hello Taro
+```
