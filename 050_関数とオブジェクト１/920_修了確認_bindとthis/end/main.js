@@ -59,4 +59,4 @@ person.hello1s();
  * "Bye"しか表示されませんでした。
  * "Bye Tom"とするためにはどうすればよいでしょうか？
  */
-// setTimeout(person.bye.bind(person), 1000);
+setTimeout(person.bye.bind(person), 1000);

@@ -12,7 +12,9 @@ const person = {
     }
 }
 
-// setTimeout(/** ここに追記 */, 1000);
+setTimeout(function () {
+  console.log(person.hello())
+}, 1000);
 
 /**
  * 問題２：
@@ -24,7 +26,12 @@ const person = {
  * ※alertは第一引数に渡した文字列を画面のダイアログに表
  * 示する関数です。
  */
-
+const a = () => {
+  alert(person.hello());
+}
+setTimeout(function () {
+  a();
+}, 1000);
 
 /**
  * 問題３：
@@ -63,32 +70,32 @@ obj.greeting = function() {
  * 
  * ※コールバック関数を用いて実装してください。
  */
-function calcFactory(val) {
+function calcFactory(val, output) {
     return {
         plus: function(target) {
             const newVal = val + target;
-            console.log(`${val} + ${target} = ${newVal}`);
+            output(`${val} + ${target} = ${newVal}`);
             val = newVal;
         },
         minus: function(target) {
             const newVal = val - target;
-            console.log(`${val} - ${target} = ${newVal}`);
+            output(`${val} - ${target} = ${newVal}`);
             val = newVal;
         },
         multiply: function(target) {
             const newVal = val * target;
-            console.log(`${val} x ${target} = ${newVal}`);
+            output(`${val} x ${target} = ${newVal}`);
             val = newVal;
         },
         divide: function(target) {
             const newVal = val / target;
-            console.log(`${val} / ${target} = ${newVal}`);
+            output(`${val} / ${target} = ${newVal}`);
             val = newVal;
         }
     };
 }
 
-const calc = calcFactory(10);
+const calc = calcFactory(10,console.log);
 calc.plus(5); 
 calc.minus(3); 
 calc.multiply(3);

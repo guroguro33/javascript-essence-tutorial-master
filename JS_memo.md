@@ -247,7 +247,7 @@ fn(function () {
 
 ### bind
 
-- bind によって this や引数を固定した新しい関数を作成
+- bind によって this や引数を固定した新しい関数を作成(実行はしない)
   - bind による this の束縛と言う
 - オブジェクト.関数().bind(実行元, 引数);
 
@@ -289,4 +289,76 @@ const d = c.bind(null, 'Taro');
 
 // 引数Bobを指定しても、束縛されたTaroが実行される
 d('Bob'); // hello Taro
+```
+
+### call, apply
+- thisや引数の参照先を変更するのはbindと同じだが、同時に関数を実行する
+```javascript
+function a(name1, name2) {
+    console.log('hello ' + name1 + ',' + name2);
+}
+
+const tim = { name: 'Tim' };
+
+// bindは新しい関数bを生成するのみ
+const b = a.bind(tim, 'Bob', 'John');
+// 実行は別に行う
+b();
+// applyとcallは実行まで行う
+// applyは関数aの複数の引数を配列で渡す
+a.apply(tim, ['Bob', 'John']);
+// 第２引数以降で関数aの複数の引数を束縛できる
+a.call(tim, 'Bob', 'John');
+
+// applyの実践方法
+
+const array = [1, 2, 3, 4, 5];
+
+// ES5までの方法
+// const result = Math.max.apply(null, array);
+
+// ES6からスプレッド演算子が導入
+const result = Math.max(...array);
+console.log(result);
+```
+
+### アロー関数
+- 無名関数を記述しやすくした省略記法 () => {};
+
+| | 無名関数 | アロー関数 |
+| ------ | ------ | ------ |
+| this    | ⭕️     | ❌    |
+| arguments  | ⭕️     | ❌     |
+| new    | ⭕️    | ❌    |
+| prototype    | ⭕️    | ❌    |
+
+```javascript
+const b = function (name) {
+  return 'hello ' + name;
+}
+
+// bをアロー関数にすると引数１つだとカッコ省略可、return省略可
+const c = name => 'hello ' + name;
+console.log(c('Tom'));
+```
+### アロー関数とthis
+- アロー関数内のthisはレキシカルスコープの値をとる
+```javascript
+window.name = 'John';
+
+const person = {
+  name: 'Tom',
+  // sayプロパティの記述方法を覚えておく
+  say() {
+    console.log('sayプロパティの記述');
+  },
+  hello: () => {
+    // アロー関数内のthisはTomではなくJohnになる
+    console.log('Hello ' + this.name);
+    const a = () => console.log('Bye ' + this.name);
+    a();
+  }
+}
+
+person.hello();
 ```
