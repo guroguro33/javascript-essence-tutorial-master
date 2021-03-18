@@ -9,10 +9,16 @@
  * 
  */
 function hello(name) {
-  
+  return function () {
+    console.log('hello ' + name);
+  }
+}
+function bye() {
+  console.log('bye');
 }
 
 /**
  * 実行文は以下の通りです。
  */
 setTimeout(hello('Tom'), 1000);
+// setTimeout(bye, 1000);
