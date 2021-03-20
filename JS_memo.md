@@ -362,3 +362,39 @@ const person = {
 
 person.hello();
 ```
+
+### コンストラクター関数
+- functionで定義され、newでインスタンス化を行う
+```javascript
+function Person(name, age) {
+  this.name = name;
+  this.age = age;
+}
+
+const bob = new Person('Bob', 18);
+const tom = new Person('Tom', 23);
+const sun = new Person('sun', 20);
+```
+
+### prototype
+- コンストラクター関数のプロパティを定義
+- インスタンス化した際にはprototypeの参照が__proto__にコピーされる
+```javascript
+function Person(name, age) {
+    this.name = name;
+    this.age = age;
+    // 以下も可能だが、prototypeの方がメモリ節約になる
+    // this.hello = function() {
+    //   console.log('hello ' + this.name)
+    // }
+}
+
+// Personのhello
+Person.prototype.hello = function() {
+  console.log('hello ' + this.name)
+}
+
+const bob = new Person('Bob', 18);
+
+bob.hello();
+```
