@@ -292,10 +292,12 @@ d('Bob'); // hello Taro
 ```
 
 ### call, apply
-- thisや引数の参照先を変更するのはbindと同じだが、同時に関数を実行する
+
+- this や引数の参照先を変更するのは bind と同じだが、同時に関数を実行する
+
 ```javascript
 function a(name1, name2) {
-    console.log('hello ' + name1 + ',' + name2);
+  console.log('hello ' + name1 + ',' + name2);
 }
 
 const tim = { name: 'Tim' };
@@ -323,26 +325,30 @@ console.log(result);
 ```
 
 ### アロー関数
+
 - 無名関数を記述しやすくした省略記法 () => {};
 
-| | 無名関数 | アロー関数 |
-| ------ | ------ | ------ |
-| this    | ⭕️     | ❌    |
-| arguments  | ⭕️     | ❌     |
-| new    | ⭕️    | ❌    |
-| prototype    | ⭕️    | ❌    |
+|           | 無名関数 | アロー関数 |
+| --------- | -------- | ---------- |
+| this      | ⭕️      | ❌         |
+| arguments | ⭕️      | ❌         |
+| new       | ⭕️      | ❌         |
+| prototype | ⭕️      | ❌         |
 
 ```javascript
 const b = function (name) {
   return 'hello ' + name;
-}
+};
 
 // bをアロー関数にすると引数１つだとカッコ省略可、return省略可
-const c = name => 'hello ' + name;
+const c = (name) => 'hello ' + name;
 console.log(c('Tom'));
 ```
-### アロー関数とthis
-- アロー関数内のthisはレキシカルスコープの値をとる
+
+### アロー関数と this
+
+- アロー関数内の this はレキシカルスコープの値をとる
+
 ```javascript
 window.name = 'John';
 
@@ -357,14 +363,16 @@ const person = {
     console.log('Hello ' + this.name);
     const a = () => console.log('Bye ' + this.name);
     a();
-  }
-}
+  },
+};
 
 person.hello();
 ```
 
 ### コンストラクター関数
-- functionで定義され、newでインスタンス化を行う
+
+- function で定義され、new でインスタンス化を行う
+
 ```javascript
 function Person(name, age) {
   this.name = name;
@@ -377,24 +385,50 @@ const sun = new Person('sun', 20);
 ```
 
 ### prototype
+
 - コンストラクター関数のプロパティを定義
-- インスタンス化した際にはprototypeの参照が__proto__にコピーされる
+- インスタンス化した際には prototype の参照が**proto**にコピーされる
+
 ```javascript
 function Person(name, age) {
-    this.name = name;
-    this.age = age;
-    // 以下も可能だが、prototypeの方がメモリ節約になる
-    // this.hello = function() {
-    //   console.log('hello ' + this.name)
-    // }
+  this.name = name;
+  this.age = age;
+  // 以下も可能だが、prototypeの方がメモリ節約になる
+  // this.hello = function() {
+  //   console.log('hello ' + this.name)
+  // }
 }
 
 // Personのhello
-Person.prototype.hello = function() {
-  console.log('hello ' + this.name)
-}
+Person.prototype.hello = function () {
+  console.log('hello ' + this.name);
+};
 
 const bob = new Person('Bob', 18);
 
 bob.hello();
+```
+
+### new 演算子
+
+- オブジェクトを返す場合は、プロパティは存在せず、prototype も存在しない？
+- 非オブジェクトを返す場合(void も同様)は prototype を[__proto__]にコピーして this の参照先にする
+
+### instanceof メソッド
+
+- A instanceof F で、A は F のインスタンスか調べる
+- やっていることは、`F.__proto__ === instance.prototype`で内部の prototype の比較
+
+```javascript
+// argがオブジェクトか配列で処理を変える
+function fn(arg) {
+  if (arg instanceof Array) {
+    arg.push('value');
+  } else {
+    arg['key'] = 'value';
+  }
+  console.log(arg);
+}
+
+fn({});
 ```
