@@ -432,3 +432,19 @@ function fn(arg) {
 
 fn({});
 ```
+
+### 関数オブジェクト
+
+- new Function で関数を生成する。インスタンスとはちょっと違う
+- 基本的に function で関数生成するが、まれに文字列から関数を生成するときに使う
+
+```javascript
+const fn1 = new Function('a', 'b', 'return a * b * d');
+const result = fn1(1, 2);
+
+function fn2(a, b) {
+  return a + b;
+}
+// functionはFunctionのインスタンスである
+console.log(fn2 instanceof Function); // true
+```
