@@ -448,3 +448,31 @@ function fn2(a, b) {
 // functionはFunctionのインスタンスである
 console.log(fn2 instanceof Function); // true
 ```
+
+### プロトタイプチェーン
+
+- プロトタイプの多重形成
+- proto の中に proto がある。
+- 同名のメソッドがあれば、上位のものが優先的に呼ばれる
+
+```javascript
+function Person(name, age) {
+  this.name = name;
+  this.age = age;
+  this.hello = function () {
+    console.log('OwnProperty:hello ' + this.name);
+  };
+}
+
+Person.prototype.hello = function () {
+  console.log('Person:hello ' + this.name);
+};
+
+Object.prototype.hello = function () {
+  console.log('Object:hello ' + this.name);
+};
+
+const bob = new Person('Bob', 18);
+// まずbobのhelloを探して、なければPersonのhelloを探して、なければObjectのHelloを探す
+bob.hello(); // この場合はbobのhelloを実行
+```
