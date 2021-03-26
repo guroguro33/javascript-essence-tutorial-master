@@ -8,3 +8,7 @@ Object.prototype.hello = function() {
 }
 
 const bob = new Person('Bob', 18);
+
+const result = bob.hasOwnProperty('age');
+console.log(result);
+console.log('hello' in bob);

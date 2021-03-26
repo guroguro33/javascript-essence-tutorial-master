@@ -476,3 +476,116 @@ const bob = new Person('Bob', 18);
 // まずbobのhelloを探して、なければPersonのhelloを探して、なければObjectのHelloを探す
 bob.hello(); // この場合はbobのhelloを実行
 ```
+
+### hasOwnProperty と in
+
+- A.hasOwnProperty('B')で、A の中に B というプロパティがあるか否か（prototype は見ない）
+- 'B' in A で A の prototype を含めた中に B というプロパティがあるか否か
+
+```javascript
+const result = bob.hasOwnProperty('age');
+console.log(result); // true
+console.log('hello' in bob); // true
+```
+
+### プロトタイプ継承
+
+- 別のコンストラクター関数のプロトタイプを受け継いで、機能を流用できる
+
+```javascript
+function Person(name, age) {
+  this.name = name;
+  this.age = age;
+}
+
+Person.prototype.hello = function () {
+  console.log('hello ' + this.name);
+};
+
+function Japanese(name, age, gender) {
+  // プロパティ継承
+  Person.call(this, name, age);
+  // プロパティ追加
+  this.gender = gender;
+}
+// prototype継承
+Japanese.prototype = Object.create(Person.prototype);
+
+// オーバーライド
+Japanese.prototype.hello = function () {
+  console.log('Konnichiwa ' + this.name);
+};
+
+// メソッド追加
+Japanese.prototype.bye = function () {
+  console.log('Sayonara ' + this.name);
+};
+
+const taro = new Japanese('Taro', 23, 'Male');
+console.log(taro);
+taro.hello();
+taro.bye();
+```
+
+### クラス
+
+- ES6 から登場し、コンストラクター関数をクラス表記できるようにしたもの
+- クラス関数も内部で prototype が動いている
+
+```javascript
+class Person {
+  // constructorでコンストラクター部分を記述
+  constructor(name, age) {
+    this.name = name;
+    this.age = age;
+  }
+
+  // hello関数を記述するとprototypeにhelloが追加
+  hello() {
+    console.log('hello ' + this.name);
+  }
+}
+const taro = new Person('Taro', 23);
+```
+
+### クラス継承
+
+- extends が使える
+- constructor 内で super も使える
+
+```javascript
+class Person {
+  constructor(name, age) {
+    this.name = name;
+    this.age = age;
+  }
+
+  hello() {
+    console.log('hello ' + this.name);
+  }
+}
+
+// 継承
+class Japanese extends Person {
+  // constructor内でsuperを使う
+  constructor(name, age, gender) {
+    super(name, age);
+    this.gender = gender;
+  }
+  // extendでprototype継承は完了済
+  // Japaneseクラス特有メソッドを定義
+  hello() {
+    console.log('Konnichiwa ' + this.name);
+  }
+  bye() {
+    console.log('Sayonara ' + this.name);
+  }
+}
+```
+
+### ビルトインオブジェクト
+
+- コード実行前に JS エンジンによって自動的に生成されるオブジェクト
+
+- String,Object,Number,Function,Math,Boolean,Date,Symbol etc
+- プリミティブ型以外、全てオブジェクトのため、prototype にビルトインオブジェクトが入っている
