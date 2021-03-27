@@ -586,6 +586,38 @@ class Japanese extends Person {
 ### ビルトインオブジェクト
 
 - コード実行前に JS エンジンによって自動的に生成されるオブジェクト
-
 - String,Object,Number,Function,Math,Boolean,Date,Symbol etc
 - プリミティブ型以外、全てオブジェクトのため、prototype にビルトインオブジェクトが入っている
+
+### ラッパーオブジェクト
+
+- プリミティブ値を内包するオブジェクト
+- new でオブジェクトとして呼ばなくてもラッパーオブジェクトを内包しているため呼び出し可能
+
+```javascript
+// const a = new String('hello');
+const a = 'hello';
+console.log(a.toUpperCase());
+
+// const b = new Number(100)
+const b = 100;
+console.log(b.toExponential());
+```
+
+### Symbol（ES6 より）
+
+- プロパティーの重複を避けるために、必ず一意の値を返す関数
+- プリミティブ型の一つ
+- ES5 から上がる際に既存コードを破壊しないためのプロパティ識別子
+
+```javascript
+const s = Symbol('hello');
+// ブラケット記法でhello関数を追加
+String.prototype[s] = function () {
+  return 'hello ' + this;
+};
+
+const tom = 'Tom';
+// helloファンクションを実行
+console.log(tom[s]());
+```
