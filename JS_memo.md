@@ -647,3 +647,53 @@ obj.prop = 2;
 // オブジェクトリテラルの場合、全て設定値はtrueとなる
 const descriptor = Object.getOwnPropertyDescriptor(obj, 'prop');
 ```
+
+### setter と getter
+
+- ディスクリプターには４つの設定値の他に、set と get の２つの設定値がある
+- 初期は存在しない(undefined)が、設定すると現れる
+
+```javascript
+// ES5までの書き方
+function Person1(name, age) {
+  this._name = name;
+  this._age = age;
+}
+// クラスに対して下記のように記述するとstatic関数になる
+Person1.hello = function () {
+  console.log('hello');
+};
+// getterとsetterの書き方はdefinePropertyを使う
+Object.defineProperty(Person1.prototype, 'name', {
+  get: function () {
+    console.log('hello'); // getterに処理を追加したい時などに使う
+    return this._name;
+  },
+  set: function (val) {
+    this._name = val;
+  },
+});
+```
+
+```javascript
+// ES6からの書き方
+class Person2 {
+  // コンストラクター
+  constructor(name, age) {
+    this._name = name;
+    this._age = age;
+  }
+  // getterとsetter
+  get name() {
+    console.log('hello');
+    return this._name;
+  }
+  set name(val) {
+    this._name = val;
+  }
+  // static関数
+  static hello() {
+    console.log('hello');
+  }
+}
+```
