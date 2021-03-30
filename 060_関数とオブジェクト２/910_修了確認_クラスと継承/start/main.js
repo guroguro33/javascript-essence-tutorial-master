@@ -52,3 +52,69 @@ function loginController(user) {
     console.log('login failed');
   }
 }
+
+class Person{
+  // ログイン
+  login() {
+    if (this.name === 'Bob') {
+      console.log('User: ' + this.name);
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  // ユーザー権限チェック
+  checkRoll() {
+    if (this.roll === 'normal') {
+      console.log('you have normal roll');
+      return true;
+
+    } else if (this.roll === 'admin') {
+      console.log('you have admin roll');
+      return true;
+
+    } else {
+      return false;
+    }
+  }
+
+  // リダイレクト
+  redirect() {
+    if (this.roll === 'normal') {
+      console.log('redirect : /');
+      return true;
+
+    } else if (this.roll === 'admin') {
+      console.log('redirect : /admin');
+      return true;
+    } else {
+      return false;
+    }
+  }
+}
+
+class User extends Person{
+  constructor(_name) {
+    super();
+    this.name = _name;
+    this.roll = 'normal';
+  }  
+}
+
+class AdminUser extends Person{
+  constructor(_name) {
+    super();
+    this.name = _name;
+    this.roll = 'admin';
+  }
+}
+
+const bob1 = new User('Bob');
+console.log(bob1);
+
+const bob2 = new AdminUser('Bob');
+console.log(bob2);
+
+loginController(bob1);
+loginController(bob2);
