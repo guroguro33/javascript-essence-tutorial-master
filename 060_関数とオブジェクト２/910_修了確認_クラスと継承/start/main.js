@@ -110,11 +110,5 @@ class AdminUser extends Person{
   }
 }
 
-const bob1 = new User('Bob');
-console.log(bob1);
-
-const bob2 = new AdminUser('Bob');
-console.log(bob2);
-
-loginController(bob1);
-loginController(bob2);
+loginController(new User('Bob'));
+loginController(new AdminUser('Bob'));
