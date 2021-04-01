@@ -20,4 +20,13 @@ class Person {
 }
 
 const bob = new Person('Bob', 23);
-setTimeout(bob.hello, 1000);
+// 答え１
+setTimeout(function () {
+  bob.hello();
+}, 1000);
+
+// 答え２
+setTimeout(Person.prototype.hello.bind(bob), 1000);
+
+// 答え３ bob.helloはオブジェクトではなく関数として実行しているだけだから、thisはグローバルオブジェクト
+setTimeout(bob.hello.bind(bob), 2000);
