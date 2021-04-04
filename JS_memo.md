@@ -745,3 +745,32 @@ bob.hello(tim).introduce().shakeHands(tim).bye(tim);
 - プロトタイプチェーン内も列挙対象となる。
   - Object.hasOwnProperty()を使う
 - symbol で定義したプロパティーは for...in で列挙対象にならない
+
+```javascript
+const s = Symbol();
+const obj = {
+  prop1: 'value1',
+  prop2: 'value2',
+  prop3: 'value3',
+  [s]: 'value4', // 変数をキーに使うときは[]を使う
+};
+
+// prototypeを使うと、そのままだとmethodは列挙対象になる
+Object.prototype.method = function () {};
+
+// definePropertyで列挙対象から外す
+Object.defineProperty(Object.prototype, 'method', {
+  enumerable: false,
+});
+
+// ディスクリプターのenumerableを確認
+const d = Object.getOwnPropertyDescriptor(Object.prototype, 'method');
+console.log(d);
+
+for (let key in obj) {
+  // enumerableをfalseにしない場合はhasOwnPropertyを使う
+  // if (obj.hasOwnProperty(key)) {
+  console.log(key, obj[key]); // Symbolは出てこない
+  // }
+}
+```
