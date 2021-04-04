@@ -627,7 +627,7 @@ console.log(tom[s]());
 - プロパティの内部にある４つの設定値をディスクリプターという
 - value 値
 - configurable 設定変更可能性
-- enumerable 列挙可能性
+- enumerable 列挙可能性 (for-in で回せるか否か)
 - writable 値の変更可能性
 
 ```javascript
@@ -736,3 +736,12 @@ const tim = new Person('Tim', 33);
 
 bob.hello(tim).introduce().shakeHands(tim).bye(tim);
 ```
+
+## 反復
+
+### for...in
+
+- 列挙可能性プロパティーに対して順不同で反復処理を実行する。
+- プロトタイプチェーン内も列挙対象となる。
+  - Object.hasOwnProperty()を使う
+- symbol で定義したプロパティーは for...in で列挙対象にならない
