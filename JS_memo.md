@@ -862,3 +862,37 @@ for (let k of s) {
   console.log(k); // Setはfor...ofで取り出せる
 }
 ```
+
+### イテレーター
+
+- for...of で取り出せる
+- あとでまとめる
+
+```javascript
+// 基本形
+function genIterator() {
+  return {
+    next: function () {
+      return {
+        done: true / false,
+        value: 値,
+      };
+    },
+  };
+}
+```
+
+### ジェネレーター
+
+- イテレーターを生成するための特殊な関数
+
+```javascript
+// 基本形
+function* gen() {
+  if(ループ継続) {
+    yield 値: // done:falseでvalueが値
+  } else {
+    return 値; // done:trueでvalueが値
+  }
+}
+```
