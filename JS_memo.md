@@ -896,3 +896,38 @@ function* gen() {
   }
 }
 ```
+
+### スプレッド演算子
+
+- 反復可能や列挙可能オブジェクトの展開を行う。
+- {}や[]の中で使用する
+
+```javascript
+let a = [...array];
+
+// オブジェクトを配列に直す
+const obj1 = {
+  prop1: 'value1',
+  prop2: 'value2',
+  prop3: 'value3',
+};
+
+// ジェネレータを使う
+Object.prototype[Symbol.iterator] = function* () {
+  for (let key in this) {
+    yield [key, this[key]];
+  }
+};
+
+// スプレッド演算子を配列[]に入れるとイテレータの挙動に従う（配列になる）
+const arry3 = [...obj1];
+console.log(arry3);
+```
+
+### 残余引数
+
+- 日引数に渡された変数を配列にまとめる
+
+```javascript
+function(...args)
+```
