@@ -18,3 +18,20 @@
  * 
  * の値が順番にコンソールに表示されます。
  */
+
+// = {}で引数が空の時でもエラーにならない
+function* genStep({ min = 0, max = 100, step = 1 } = {}) {
+  
+  for (let val = min; val <= max; val += step){
+    yield val;
+  }
+}
+
+
+// const it = genStep({ min: 4, max: 10, step: 2 });
+const it = genStep({ min: 4, max: 10});
+console.log(it);
+
+for(let value of it) {
+   console.log(value);
+ }
