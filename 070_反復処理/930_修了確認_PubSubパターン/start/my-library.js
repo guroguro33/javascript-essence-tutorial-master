@@ -40,6 +40,23 @@
  * 
  */
 
+const events = (function () {
+  const eventStack = new Map();
+
+  // returnの中にオブジェクトを入れることで、event.on()などと使えるようになる
+  return {
+    on(){
+
+    },
+    off() {
+      
+    },
+    emit() {
+      
+    }
+  }
+})();
+
 class MyLibrary {
 	constructor() {
 		events.emit('beforeInit');
@@ -50,5 +67,5 @@ class MyLibrary {
 	}
 	method() {
 		// do something
-	}
+  }
 }
