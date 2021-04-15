@@ -45,25 +45,36 @@ const events = (function () {
 
   // returnの中にオブジェクトを入れることで、event.on()などと使えるようになる
   return {
-    on(){
-
+    on(type, fn){ 
+      const fnStack = eventStack.get(type) || new Set();
+      fnStack.add(fn);
+      eventStack.set(type, fnStack);
     },
-    off() {
-      
+    off(type, fn) {
+      const fnStack = eventStack.get(type);
+      if (fnStack && fnStack.has(fn)) {
+        fnStack.delete(fn);
+      }
     },
-    emit() {
-      
+    emit(type, _this) {
+      // console.log(_this)
+      const fnStack = eventStack.get(type);
+      if (fnStack) {
+        for (const fn of fnStack) {
+          fn.call(_this);
+        }
+      }
     }
   }
-})();
+})(); // 即時関数にする
 
 class MyLibrary {
 	constructor() {
-		events.emit('beforeInit');
+		events.emit('beforeInit', this);
 	
 		console.log('library process');
 		
-		events.emit('afterInit');
+		events.emit('afterInit', this);
 	}
 	method() {
 		// do something

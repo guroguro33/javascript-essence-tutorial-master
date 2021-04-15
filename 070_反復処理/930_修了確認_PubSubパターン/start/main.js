@@ -17,4 +17,6 @@ events.on('beforeInit', customFn1);
 events.on('beforeInit', customFn2);
 events.on('afterInit', customFn3);
 
+// events.off('beforeInit', customFn1);
+
 new MyLibrary();
