@@ -931,3 +931,7 @@ console.log(arry3);
 ```javascript
 function(...args)
 ```
+
+## 非同期処理
+
+- 非同期処理は一時的にメインスレッドから切り離される

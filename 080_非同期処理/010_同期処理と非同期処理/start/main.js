@@ -8,3 +8,9 @@ const btn = document.querySelector('button');
 btn.addEventListener('click', function(){
   console.log('button clicked');
 });
+
+setTimeout(function () {
+  sleep(3000)
+}, 2000)
+
+// sleep(3000);
