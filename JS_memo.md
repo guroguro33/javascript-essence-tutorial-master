@@ -940,3 +940,37 @@ function(...args)
 
 - 実行待ちの非同期処理の行列 -> 非同期処理の実行順を管理
 - 通常の関数などはコールスタックに入り、次々と実行され、コールスタックが空になると、タスクキューに入った非同期処理の内容がコールスタックに入り、実行される。
+
+## promise
+
+- 非同期処理をより簡単に顔毒性が上がるように書けるようにしたもの
+
+```javascript
+new Promise(
+  同期処理
+).then(
+  非同期処理（resolveを待つ）
+).catch(
+  非同期処理（rejectを待つ）
+).finally(
+  非同期処理（then、またはcatchを待つ）
+);
+```
+
+```javascript
+new Promise(function (resolve, reject) {
+  resolve('hello'); // それぞれ結果が違う
+  reject('bye'); // それぞれ結果が違う
+})
+  .then(function (data) {
+    // resolveが呼ばれた場合の処理
+    console.log(data); // -> "hello"
+  })
+  .catch(function (data) {
+    // rejectが呼ばれた場合の処理
+    console.log(data); // -> "bye"
+  })
+  .finally(function () {
+    console.log('修了処理');
+  });
+```
