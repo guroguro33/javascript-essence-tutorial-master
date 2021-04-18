@@ -974,3 +974,33 @@ new Promise(function (resolve, reject) {
     console.log('修了処理');
   });
 ```
+
+## Promise チェーン
+
+```javascript
+function sleep(val) {
+  return new Promise(function (resolve) {
+    setTimeout(function () {
+      console.log(val++);
+      resolve(val);
+    }, 1000);
+  });
+}
+
+sleep(0) // 出力0
+  .then((val) => {
+    return sleep(val); // 出力1 returnでpromiseを返してチェーンにする
+  })
+  .then(function (val) {
+    return sleep(val); // 出力2
+  })
+  .then(function (val) {
+    return sleep(val); // 出力3
+  })
+  .then(function (val) {
+    return sleep(val); // 出力4
+  })
+  .then(function (val) {
+    return sleep(val); // 出力5
+  });
+```
