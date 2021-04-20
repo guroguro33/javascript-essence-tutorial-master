@@ -1042,3 +1042,31 @@ Promise.allSettled([sleep(2), sleep(3), sleep(4)])
     console.error(data); // allSettledの場合はrejectでもcatchされない
   });
 ```
+
+### マクロタスク
+
+- タスクキューと呼んでいたもの
+- setTimeout でマクロタスクにタスクを入れている
+- マイクロタスクの方が優先される
+- 順番が回ってきたら、全てのジョブを実行する
+
+```javascript
+// 例
+setTimeout;
+setInterval;
+requestAnimationFrame;
+```
+
+### マイクロタスク
+
+- タスクキューとは別で存在する非同期処理の待ち行列 -> ジョブキュー
+- Promise でマイクロタスクにタスクを入れている
+- コールスタックが空になると、マクロタスクより優先してコールスタックにジョブが入る
+- 順番が回ってきたら１つずつタスクを実行（マクロタスクに割り込みをうける）
+
+```javascript
+// 例
+Promises;
+queueMicrotask;
+MutationObserver;
+```
