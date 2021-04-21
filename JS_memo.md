@@ -1115,3 +1115,28 @@ init()
     console.error(e);
   });
 ```
+
+### JSON 形式の JS との違い
+
+1. ダブルクォーテーションのみ使用可（シングル ❌）
+2. プロパティにもダブルクォーテーション -> "key" : "val"
+3. 要素の最後にカンマはつけてはいけない
+
+### fetch
+
+- グローバルオブジェクトの関数で、JSON 形式を取得し、Promise を返す
+
+```javascript
+async function fetchUsers() {
+  // fetchでresponseを返す。promiseを返すため、awaitが使える
+  // awaitでresolveの引数が返ってくる->response
+  const response = await fetch('users.json');
+  // responseのメソッドjsonを使う。これもpromiseを返す。
+  const json = await response.json();
+  for (const user of json) {
+    console.log(`I'm ${user.name}, ${user.age} years old`);
+  }
+}
+// 実行
+fetchUsers();
+```
