@@ -32,6 +32,52 @@
  */
 async function myFetch(fileName) {
 	const response = await fetch(`../json/${fileName}`);
-	const json = await response.json();
+  const json = await response.json();
+  // console.log(`fetch ${fileName}`);
 	return json;
 }
+
+async function showMessage() {
+  let user = await myFetch('user1.json');
+  console.log(`--${user.name}'s timeline--`);
+  
+  let friendList = await myFetch(`friendsOf${user.id}.json`);
+  for (const id of friendList.friendIds) {
+    const friend = await myFetch(`user${id}.json`);
+    const msg = await myFetch(`message${friend.latestMsgId}.json`);
+    console.log(`${friend.name} says: ${msg.message}`);
+  }
+}
+
+showMessage();
+
+// 模範解答
+(async function () {
+  const me = await myFetch(`user1.json`);
+	console.log(`--${me.name}'s timeline--`);
+
+  const friendList = await myFetch(`friendsOf${me.id}.json`);
+
+  const friendIds = new Set();
+  for (const id of friendList.friendIds) {
+    friendIds.add(myFetch(`user${id}.json`));
+  }
+  // console.log(friendIds);
+  const friends = await Promise.all(friendIds);
+  console.log(friends);
+
+  const msgIds = new Set();
+
+  for (const friend of friends) {
+    msgIds.add(myFetch(`message${friend.latestMsgId}.json`))
+  }
+  const msgs = await Promise.all(msgIds);
+  console.log(msgs)
+  for (const friend of friends) {
+    for (const msg of msgs) {
+      if (friend.id === msg.userId) {
+        console.log(`${friend.name} says: ${msg.message}`);
+      }
+    }
+  }
+})();
