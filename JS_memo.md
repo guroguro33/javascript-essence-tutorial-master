@@ -1008,6 +1008,7 @@ sleep(0) // 出力0
 ## 並列処理
 
 - 並列処理する場合は Promise.all(繰り返し処理する引数)を使う
+- 全て非同期処理すると１つの処理が終わるのを待ってから次の処理に移るが、パフォーマンスを考えると、並列処理するといい場面がある
 - Promise.race を使うと、配列の最初の resolve が帰った直後に then メソッドを実行する
 - 新しい Promise.allSettled を使うと、reject の場合にも catch にいかず、then が実行される
 
@@ -1186,4 +1187,56 @@ async function init() {
   }
 }
 init();
+```
+
+## モジュラー（ES6)
+
+### モジュール
+
+- ソースコードを機能毎に分割して、メンテナンスしやすくする仕組み
+- 代表的なものに ESM（いーえすもじゅーる）と CJS（こもんじぇいえす）がある
+
+1. CommonJS
+
+- Node.js にある仕組み
+  - 読み込み require
+  - 書き込み exports
+  - 拡張子 .cjs
+
+2. ES Modules
+
+- ECMAScript にあり、ブラウザで実行
+  - 読み込み import
+  - 書き込み export
+  - 拡張子 .mjs
+
+### import と export
+
+```javascript
+// 記載方法
+// html
+<script type="module" src="moduleB.js"></script>;
+
+// moduleA.js
+// 出力したい変数や関数を定義
+export let publicVal = 0;
+
+export function publicFn() {
+  console.log('publicFn called: ');
+}
+
+export default 10;
+
+// moduleB.js
+// 読み込みたいファイルを記載
+// export defaultで出力したものには{}なしで変数名をつける
+// 別名をつけるときはas
+// webpackを使わない時は.jsをつける
+import d_val, { publicVal as val, publicFn as fn } from './moduleA.js';
+
+console.log(val); // 出力:0
+
+fn(); // 出力:publicFn called:
+
+console.log(d_val); // 出力:10
 ```

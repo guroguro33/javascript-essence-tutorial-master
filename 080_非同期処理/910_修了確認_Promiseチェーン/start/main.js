@@ -48,10 +48,12 @@ async function showMessage() {
     console.log(`${friend.name} says: ${msg.message}`);
   }
 }
-
-showMessage();
-
+// console.time('firstFetch:');
+// showMessage();
+// console.timeEnd('firstFetch:');
+  
 // 模範解答
+console.time('secondFetch:');
 (async function () {
   const me = await myFetch(`user1.json`);
 	console.log(`--${me.name}'s timeline--`);
@@ -64,7 +66,7 @@ showMessage();
   }
   // console.log(friendIds);
   const friends = await Promise.all(friendIds);
-  console.log(friends);
+  // console.log(friends);
 
   const msgIds = new Set();
 
@@ -72,7 +74,7 @@ showMessage();
     msgIds.add(myFetch(`message${friend.latestMsgId}.json`))
   }
   const msgs = await Promise.all(msgIds);
-  console.log(msgs)
+  // console.log(msgs)
   for (const friend of friends) {
     for (const msg of msgs) {
       if (friend.id === msg.userId) {
@@ -81,3 +83,4 @@ showMessage();
     }
   }
 })();
+console.timeEnd('secondFetch:');
