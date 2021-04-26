@@ -1240,3 +1240,42 @@ fn(); // 出力:publicFn called:
 
 console.log(d_val); // 出力:10
 ```
+
+### ESModule と即時関数
+
+```javascript
+// moduleA
+
+console.log('ESmodule called');
+
+let privateVal = 1;
+
+// publicValがプリミティブ型だとモジュールから使用不可
+// オブジェクトにすると呼び出せる
+export let publicVal = { prop: 10 };
+
+export function publicFn() {
+  console.log('publicFn called: ' + publicVal.prop);
+  console.log('publicFn called2: ' + privateVal);
+  // プリミティブ型を操作したい場合は関数内で処理すると可能
+  privateVal++;
+}
+
+function privateFn() {}
+```
+
+```javascript
+// moduleB
+
+import { publicFn as fn, publicVal as val } from './moduleA.js'; // 出力: ESmodule called
+
+fn(); // publicFn called: 10 publicFn called2: 1
+fn(); // publicFn called: 10 publicFn called2: 2
+
+// オブジェクトにするとval.propとして呼び出せるし、++可能
+console.log(val.prop++); // 10
+console.log(val.prop++); // 11
+fn(); // publicFn called: 11 publicFn called2: 3
+console.log(val.prop++); // 12
+console.log(val.prop++); // 13
+```
