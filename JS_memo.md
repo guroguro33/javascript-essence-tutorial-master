@@ -1215,6 +1215,8 @@ init();
 ```javascript
 // 記載方法
 // html
+// type="module"の場合、deferが自動で付与されている
+// 2回以上記述しても、１回しか読み込まれない
 <script type="module" src="moduleB.js"></script>;
 
 // moduleA.js
@@ -1290,3 +1292,33 @@ console.log(val.prop++); // 13
 
 - これまでのスコープはグローバルスコープ、スクリプトスコープ、関数スコープ、ブロックスコープ
 - スクリプトスコープがなく、モジュールスコープになる
+
+### Strict モード（ES5)
+
+- 意図しないバグの混入の防止
+- 予約語の確保
+- コードのセキュア化
+
+```javascript
+// ------main.js---------
+// use strictと記述するとstrictモードになる
+'use strict';
+
+a = 0; // constなど忘れるとstrictモードではundefinedになる
+console.log(a);
+
+function fn() {
+  'use strict'; // 関数レベルでのstrictモードもできる
+  b = 0; // strictモードではundefined
+  return this;
+}
+console.log(fn.call(2)); // strictモードだとプリミティブ型の2、じゃないとオブジェクトの2
+
+fn();
+
+// ------module.js---------
+// 'use strict' と記述しなくても有効になる
+
+// 以下は予約後として定義できない
+const implements, interface, package;
+```
