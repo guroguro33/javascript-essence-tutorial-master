@@ -1298,6 +1298,9 @@ console.log(val.prop++); // 13
 - 意図しないバグの混入の防止
 - 予約語の確保
 - コードのセキュア化
+- 'use strict'と記述すると strict モードが ON になる
+- モジュールファイル内では記述なしで strict モードが ON になる
+- class 内では記述なしで strict モードが ON になる
 
 ```javascript
 // ------main.js---------
@@ -1321,4 +1324,26 @@ fn();
 
 // 以下は予約後として定義できない
 const implements, interface, package;
+```
+
+### ダイナミックインポート
+
+- 新しい記述のため、ブラウザが対応しているか要確認
+- 非同期でモジュールをインポートする
+- import('モジュール名').then(function(modules)){}で記述
+
+```javascript
+import('./moduleA.js').then(function (modules) {
+  // importするとpromiseで返ってくるため、thenでつなぐ
+  // 引数modulesの中にexportされたプロパティやメソッドが入っている
+  console.log(modules);
+  modules.publicFn();
+});
+
+// promiseで返ってくるため、async-await記述できる
+async function fn() {
+  const modules = await import('./moduleA.js');
+  modules.publicFn();
+}
+fn();
 ```

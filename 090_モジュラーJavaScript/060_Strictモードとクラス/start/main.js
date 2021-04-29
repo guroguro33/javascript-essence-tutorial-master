@@ -1,9 +1,18 @@
+// classの中は自動的にstrictモードがONになる
 class C {
-    constructor() {
+  constructor() {
+    function fn() {
+      console.log(this);
     }
+    fn();
+  }
 
-    method() {
+  method() {
+    function fn() {
+      console.log(this);
     }
+    fn();
+  }
 }
 
 const c = new C();
