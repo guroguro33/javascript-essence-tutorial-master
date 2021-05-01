@@ -1353,3 +1353,42 @@ fn();
 ### Proxy（ES6）
 
 - プロパティの操作に独自の処理を追加するためのオブジェクト
+- セッターやゲッターに独自の処理を追加できる
+
+```javascript
+const targetObj = { a: 0 };
+
+const handler = {
+  // target : Proxyで渡した第一引数(targetObj)
+  // prop : targetのプロパティの名前
+  // value : propの新しい値
+  // receiver : Proxy自体
+  set: function (target, prop, value, receiver) {
+    console.log(`[set]: ${prop}`);
+    target[prop] = value; // セッター
+    // throw new Error('cannot add prop'); // エラーに投げることも可能
+  },
+  get: function (target, prop, receiver) {
+    console.log(receiver);
+    if (target.hasOwnProperty(prop)) {
+      return target[prop]; // ゲッターだが、プロパティがなければ-1を返すことも可能
+    } else {
+      return -1;
+    }
+    console.log(`[get]: ${prop}`);
+    return target[prop];
+  },
+  deleteProperty: function (target, prop) {
+    console.log(`[delete]: ${prop}`);
+    delete target[prop]; // 消去
+  },
+};
+
+const pxy = new Proxy(targetObj, handler);
+// セッターを実行
+pxy.a = 10;
+// ゲッターを実行
+console.log(pxy.a);
+// 消去を実行
+delete pxy.a;
+```
