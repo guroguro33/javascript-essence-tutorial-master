@@ -1364,6 +1364,7 @@ const handler = {
   // value : propの新しい値
   // receiver : Proxy自体
   set: function (target, prop, value, receiver) {
+    // このsetをトラップと呼ぶ
     console.log(`[set]: ${prop}`);
     target[prop] = value; // セッター
     // throw new Error('cannot add prop'); // エラーに投げることも可能
@@ -1391,4 +1392,83 @@ pxy.a = 10;
 console.log(pxy.a);
 // 消去を実行
 delete pxy.a;
+```
+
+### Reflect(ES6)
+
+- JS エンジンの内部の汎用的な関数を呼び出すメソッドが格納されているオブジェクト
+- 内部メソッドと Reflect
+  | 内部メソッド | Reflect |
+  | -------- | ----- |
+  | [[Get]] | get |
+  | [[Set]] | set |
+  | [[Delete]] | deleteProperty |
+  | [[Construct]] | construct |
+
+- 内部メソッドを呼び出す関数の格納場所
+
+```javascript
+class C {
+  constructor(a, b) {
+    this.a = a;
+    this.b = b;
+  }
+}
+// 通常のインスタンス生成
+const obj1 = new C(1, 2);
+console.log(obj1);
+
+// Reflect関数を用いてインスタンス生成
+const obj2 = Reflect.construct(C, [1, 2]);
+
+// セッターゲッターの例
+const bob = {
+  name: 'Bob',
+  _hello: function () {
+    console.log(`hello ${this.name}`);
+  },
+};
+
+const tom = {
+  name: 'Tom',
+  _hello: function () {
+    console.log(`hello ${this.name}`);
+  },
+  get hello() {
+    return this._hello();
+  },
+};
+
+// ゲッターの呼び出し
+tom.hello;
+// Reflectを使った呼び出し
+// 第３引数にreceiverがセットでき、bindのように使える
+Reflect.get(tom, 'hello', bob);
+```
+
+- Proxy と合わせて使用するため
+
+```javascript
+const targetObj = {
+  a: 1,
+  get value() {
+    return this.a;
+  },
+};
+
+const handler = {
+  get: function (target, prop, receiver) {
+    console.log(`[get]: ${prop}`);
+    if (target.hasOwnProperty(prop)) {
+      return Reflect.get(target, prop, receiver);
+    } else {
+      return -1;
+    }
+  },
+};
+
+const pxy = new Proxy(targetObj, handler);
+// Proxy経由のため、getトラップも動作する（処理を追加できる）
+console.log(pxy.value); // [get]:value と [get]:a と 1
+console.log(pxy.b); // [get]:b と -1
 ```
