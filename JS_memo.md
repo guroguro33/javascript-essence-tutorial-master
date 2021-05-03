@@ -1472,3 +1472,170 @@ const pxy = new Proxy(targetObj, handler);
 console.log(pxy.value); // [get]:value と [get]:a と 1
 console.log(pxy.b); // [get]:b と -1
 ```
+
+### WeakMap(ES6)
+
+- 弱い参照でオブジェクトを保持するコレクション
+- キーは必ずオブジェクト
+- キーを削除や変更すると値が削除される（弱参照）ガベージコレクションで削除される
+- for...of で反復処理ができない
+
+```javascript
+const wm = new WeakMap();
+
+// キーとしてオブジェクトを定義
+let o = {};
+
+// setでoをキーにし、値をセット
+wm.set(o, 'value1');
+
+// キーにnullを入れると値が削除される
+// o = null;
+
+console.log(wm.get(o));
+console.log(wm.has(o));
+console.log(wm.delete(o));
+```
+
+### WeakMap とプライベート変数
+
+- class 内のプロパティは\_name などで表記していたが、外部からアクセスできる
+- WeakMap を使ってアクセス不可にできる
+
+```javascript
+// ------person.js-------
+// WeakMapを定義し、exportしないことで内部のみの変数とする
+const wm = new WeakMap();
+export class Person {
+  constructor(name, age) {
+    // wmにコンストラクタをセットする
+    wm.set(this, {
+      name,
+      age,
+    });
+  }
+
+  hello() {
+    // メソッド内でgetで取り出す
+    console.log(`hello ${wm.get(this).name}`);
+  }
+}
+
+// -------main.js---------
+import { Person } from './person.js';
+
+const tim = new Person('Tim', 23);
+const bob = new Person('Bob', 23);
+tim.hello();
+bob.hello();
+
+console.log(tim.name); // undefined
+```
+
+### JSON
+
+```javascript
+// JSON -> Objectに変換
+JSON.parse;
+// Object -> JSONに変換
+JSON.stringify;
+```
+
+```javascript
+const obj = { a: 0, b: 1, c: 2 };
+
+// 値が1より小さいオブジェクトをカットするメソッド
+function replacer(prop, value) {
+  if (value < 1) {
+    return;
+  }
+  return value;
+}
+
+// オブジェクトをjsonに変換
+// objに前処理としてreplacerを使う
+const json1 = JSON.stringify(obj, replacer);
+// objの前処理を配列でキーを指定できる
+const json2 = JSON.stringify(obj, ['a', 'b']);
+console.log(json1);
+console.log(json2);
+
+// jsonをオブジェクトに変換
+const obj1 = JSON.parse(json1);
+console.log(obj1);
+
+const obj2 = JSON.parse(json2);
+console.log(obj2);
+```
+
+### Storage
+
+- ブラウザの保存領域にデータを格納するためのオブジェクト
+
+```javascript
+const obj = { a: 10 };
+const json = JSON.stringify(obj);
+
+// localStorage.setItemで保存
+// 第1引数はキー、第２引数はバリュー
+localStorage.setItem('key', json);
+// localStorage.getItemで取得
+const result = localStorage.getItem('key');
+
+const json2 = JSON.parse(result);
+console.log(json2); // {a:10}のオブジェクト
+```
+
+### 配列
+
+```javascript
+const array = [1, 2, 3, 4, 5];
+
+// ---------要素の処理--------------------------------
+// 後ろに要素を追加
+array.push(6);
+
+// 後ろに結合
+const array2 = array.concat([7, 8, 9, 10]);
+// スプレッド演算子を使った方がベター
+const array2 = [0, ...array, 7, 8, 9, 10, 11];
+
+// 後ろの要素を削除
+const result = array.pop();
+
+// 最初の要素を削除
+const result = array.shift();
+
+// 最初に要素を追加、結果の配列の長さを返す
+const result = array.unshift(0);
+
+// 切り取り 第３引数以降は要素を追加する
+const result = array.splice(0, 3, 2, 3, 4);
+
+// ---------反復処理------------------------------------
+// 第１引数：値
+// 第２引数：インデックス
+// 第３引数：配列自体
+array.forEach(function (v, i, arry) {
+  console.log(v); // 1 2 3 4 5
+});
+
+// 新しい配列を生成 returnで値を加工して格納
+const newArray = array.map(function (v, i, arry) {
+  return v * 2; // [2, 4, 6, 8, 10]
+});
+
+// 新しい配列を生成 returnがtruthyだと値を配列に格納
+const filterArray = array.filter(function (v, i, arry) {
+  return i >= 1;
+});
+console.log(filterArray); // [2,3,4,5]
+
+// ---------reduce-------------------------------------
+const result = array.reduce(function (accu, curr) {
+  console.log(accu, curr);
+  return accu + curr;
+}, 0); // 第２引数を入れると、それが１ループ目のaccuの初期値になる
+
+console.log(result); // 15
+```
