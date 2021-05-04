@@ -18,7 +18,49 @@ class MyArray extends Array {
 	print(label = '') {
 		console.log(`%c ${label}`, 'color: blue; font-weight: 600;', this);
 		return this;
-	}
+  }
+
+  push(val) {
+    super.push(val);
+    return this;
+  }
+
+  foreach(callback) {
+    for (let i = 0; i < this.length; i++) {
+      callback(this[i], i, this);
+    }
+  }
+  
+  map(callback) {
+    const newArray = new MyArray();
+    for (let i = 0; i < this.length; i++) {
+      const result = callback(this[i], i, newArray);
+      newArray.push(result);
+    }
+    return newArray;
+  }
+
+  filter(callback) {
+    const newArray = new MyArray();
+    for (let i = 0; i < this.length; i++) {
+      if (callback(this[i], i, this)) {
+        newArray.push(this[i]);
+      }
+    }
+    return newArray;
+  }
+
+  reduce(callback, accu) {
+    const tmpArray = [...this];
+
+    if (accu === undefined) {
+      accu = tmpArray.shift();
+    }
+    for (let i = 0; i < tmpArray.length; i++) {
+      accu = callback(accu, tmpArray[i]);
+    }
+    return accu;
+  }
 }
 
 function double(v, i, obj) {
@@ -36,6 +78,9 @@ const result = original
 	.reduce(function(accu, curr) {
 		return accu + curr;
 	})
+  // .foreach(function (v, i, obj) {
+  //   console.log(v);
+  // })
 
 console.log('%coriginal', 'color: blue; font-weight: bold;', original);
 console.log('%cresult', 'color: red; font-weight: bold;', result);
