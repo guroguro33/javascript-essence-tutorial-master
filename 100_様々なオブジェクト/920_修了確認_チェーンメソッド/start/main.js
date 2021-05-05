@@ -24,7 +24,26 @@ class IteratableObject {
 	print(label = '') {
 		console.log(`%c ${label}`, 'color: blue; font-weight: 600;', this);
 		return this;
-	}
+  }
+  
+  set(key, val) {
+    const result = new IteratableObject(this);
+    result[key] = val;
+    return result;
+  }
+
+  forEach(callback) {
+    for (let [k, v] of this) {
+      callback(v, k, this);
+    }
+  }
+
+  map(callback) {
+    for (let key in this) {
+      callback(this[key], key, this);
+    }
+    return this;
+  }
 
 }
 
@@ -41,9 +60,13 @@ const original = new IteratableObject({
 const result = original
 	.map(prefix)
 	.set('key4', 'value4')
-	.filter(function (val, key) {
-		return key === 'key4';
-	});
+  .set('key5', 'value5')
+  .forEach(function (v) {
+    console.log(v);
+  })
+	// .filter(function (val, key) {
+	// 	return key === 'key4';
+	// });
 
 console.log('%coriginal', 'color: blue; font-weight: bold;', original);
 console.log('%cresult', 'color: red; font-weight: bold;', result);
