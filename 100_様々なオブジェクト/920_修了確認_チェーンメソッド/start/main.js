@@ -15,34 +15,53 @@
  * 
  */
 class IteratableObject {
-	constructor(obj) {
-		for(let prop in obj) {
-			this[prop] = obj[prop];
-		}
-	}
+  constructor(obj) {
+    for (let prop in obj) {
+      this[prop] = obj[prop];
+    }
+  }
 
-	print(label = '') {
-		console.log(`%c ${label}`, 'color: blue; font-weight: 600;', this);
-		return this;
+  print(label = '') {
+    console.log(`%c ${label}`, 'color: blue; font-weight: 600;', this);
+    return this;
   }
   
   set(key, val) {
-    const result = new IteratableObject(this);
-    result[key] = val;
-    return result;
+    // const result = new IteratableObject(this);
+    this[key] = val;
+    return this;
   }
 
   forEach(callback) {
     for (let [k, v] of this) {
       callback(v, k, this);
     }
+    return this;
   }
 
   map(callback) {
-    for (let key in this) {
-      callback(this[key], key, this);
+    const newInstance = new IteratableObject()
+    for (let [k, v] of this) {
+      newInstance[k] =  callback(v, k, this);
     }
-    return this;
+    return newInstance;
+  }
+
+  filter(callback) {
+    const newInstance = new IteratableObject();
+    for (let [k, v] of this) {
+      if (callback(v, k)) {
+        newInstance[k] = v;
+      }
+    }
+    return newInstance;
+  }
+
+  // TODO:ジェネレータとイテレータとmapを復習
+  *[Symbol.iterator]() {
+    for (let key in this) {
+      yield [key, this[key]];
+    }
   }
 
 }
@@ -57,16 +76,20 @@ const original = new IteratableObject({
 	key3: 'value3',
 });
 
+// for (let [k, v] of original) {
+//   console.log(k, v);
+// }
+
 const result = original
 	.map(prefix)
 	.set('key4', 'value4')
   .set('key5', 'value5')
-  .forEach(function (v) {
-    console.log(v);
+  .forEach(function (v, k) {
+    console.log(k, v);
   })
-	// .filter(function (val, key) {
-	// 	return key === 'key4';
-	// });
+	.filter(function (val, key) {
+		return key === 'key4';
+	});
 
 console.log('%coriginal', 'color: blue; font-weight: bold;', original);
 console.log('%cresult', 'color: red; font-weight: bold;', result);
