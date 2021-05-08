@@ -943,7 +943,9 @@ function(...args)
 
 ## promise
 
-- 非同期処理をより簡単に顔毒性が上がるように書けるようにしたもの
+- 非同期処理をより簡単に可読性が上がるように書けるようにしたもの
+- グローバルコンテキストから処理を切り離して最後に処理したい場合->Promise.resolve().then(function(){})
+- setTimeout の処理が終わるのを待ってから処理したい場合->下記のとおり new Promise を使う
 
 ```javascript
 new Promise(
