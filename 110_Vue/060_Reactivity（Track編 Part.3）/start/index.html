@@ -13,7 +13,7 @@
     });
 
     effect(() => {
-        console.log('effect 3', obj1.b);
+        console.log('effect 3', obj1.a);
     });
     
     effect(() => {
@@ -21,5 +21,6 @@
     });
 
     obj1.a = 1;
+    obj1.a = 3;
     obj2.a = 2;
 </script>
