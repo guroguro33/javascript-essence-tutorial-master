@@ -20,10 +20,14 @@ let activeEffect = null;
 function effect(fn) {
   activeEffect = fn;
   activeEffect();
+  activeEffect = null;
 }
 
 const targetMap = new WeakMap();
 function track(target, key) {
+  if (activeEffect === null) {
+    return;
+  }
   let depsMap = targetMap.get(target);
   
   if(!depsMap) {
