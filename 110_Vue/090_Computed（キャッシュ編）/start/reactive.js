@@ -17,9 +17,13 @@ function reactive(target) {
 }
 
 let activeEffect = null;
-function effect(fn) {
+function effect(fn, { computed = false } = {}) {
   try {
     activeEffect = fn;
+    activeEffect.computed = computed;
+    if (computed) {
+      activeEffect.dirty = true;
+    }
     activeEffect();
     return activeEffect;
   } finally {
@@ -58,17 +62,26 @@ function trigger(target, key) {
   if (!deps) {
     return;
   }
-  deps.forEach(effect => effect());
+  deps.forEach(effect => {
+    if (effect.computed) {
+      effect.dirty = true;
+    } else {
+      effect();
+    }
+  });
 }
 
 function computed(getter) {
-  let computed;
-  const runner = effect(getter);
+  let computed, value;
+  const runner = effect(getter, { computed : true });
 
   computed = {
     get value() {
-      const value = runner();
-      console.log('%c[computed:refresh]', 'background: purple; color: white;', value);
+      if (runner.dirty) {
+        value = runner();
+        runner.dirty = false;
+        console.log('%c[computed:refresh]', 'background: purple; color: white;', value);
+      }
       return value;
     }
   }
