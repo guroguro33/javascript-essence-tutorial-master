@@ -1641,3 +1641,13 @@ const result = array.reduce(function (accu, curr) {
 
 console.log(result); // 15
 ```
+
+## DOM と仮想 DOM
+
+### DOM とは
+
+- HTML を JavaScript から参照・更新するためのインターフェース
+- HTML をオブジェクト形式で表したもの
+- Vue や React などで仮想 DOM を採用
+- 仮想 DOM に変更があると DOM に PATCH されて反映する
+- 基本的にはパフォーマンスが良いため、仮想 DOM を保持する
