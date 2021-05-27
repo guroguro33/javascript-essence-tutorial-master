@@ -1651,3 +1651,43 @@ console.log(result); // 15
 - Vue や React などで仮想 DOM を採用
 - 仮想 DOM に変更があると DOM に PATCH されて反映する
 - 基本的にはパフォーマンスが良いため、仮想 DOM を保持する
+
+## querySelector
+
+- DOM を取得する
+
+```javascript
+document.querySelector('body');
+```
+
+## createElement
+
+- DOM を生成する
+
+```javascript
+document.querySelector('div');
+```
+
+## appendChild
+
+- DOM を子要素に挿入する
+
+```javascript
+body.appendChild('div');
+```
+
+## createElement
+
+- HTML の中身を記述する
+
+```javascript
+div.innerHTML('あいうえお');
+```
+
+## setAttribute
+
+- DOM に属性を追加する
+
+```javascript
+div.setAttribute('class', 'green');
+```
