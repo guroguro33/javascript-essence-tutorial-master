@@ -1691,3 +1691,13 @@ div.innerHTML('あいうえお');
 ```javascript
 div.setAttribute('class', 'green');
 ```
+
+## addEventListener
+
+- DOM にイベントを登録する
+
+```javascript
+button.addEventListener('click', () => {
+  console.log('クリックされた！');
+});
+```
