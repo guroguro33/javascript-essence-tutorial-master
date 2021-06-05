@@ -1,3 +1,17 @@
 <script type="module">
-    
+    import {queueJob, nextTick } from './scheduler.js';
+
+    queueJob(() => {
+        console.log('a');
+
+        // 最初の段階では実行されていないため、登録は最後になる
+        queueJob(() => {
+            console.log('c');
+        })
+    })
+    queueJob(() => {
+        console.log('b');
+    })
+
+    console.log('end');
 </script>
