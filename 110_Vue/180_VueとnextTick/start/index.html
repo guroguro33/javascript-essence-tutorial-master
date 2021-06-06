@@ -24,10 +24,11 @@
             methods: {
                 increment() {
                     this.num++;
-                    console.log(this.$el.querySelector('#val').innerHTML == 1);
+                    const val = this.$el.querySelector('#val');
+                    console.log(val.innerHTML == 1);
                     nextTick(() => {
-                        console.log(this.$el.querySelector('#val').innerHTML == 1);
-                    });
+                        console.log(val.innerHTML == 1);
+                    })
                 }
             }
         }).mount('#app');
