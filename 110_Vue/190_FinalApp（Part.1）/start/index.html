@@ -12,6 +12,13 @@
     <div id="app"></div>
 
     <script type="module">
+        import { createApp, h } from './app.js';
+
+        createApp({
+            render(){
+                return h('div', {}, 'hello')
+            }
+        }).mount('#app');
         
     </script>
 </body>
