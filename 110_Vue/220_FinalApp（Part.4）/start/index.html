@@ -17,8 +17,13 @@
         createApp({
             data: () => ({
                 a: 8,
-                b: 7
+                b: 5
             }),
+            computed: {
+                sum() {
+                    return this.data.a + this.data.b;
+                }
+            },
             render() {
                 return h('div', { class: 'container' }, [
                     h('div', { class: 'num' }, [
@@ -33,7 +38,7 @@
                         h('button', { class: 'btn' }, '-')
                     ]),
                     h('div', { class: 'num' }, '='),
-                    h('div', { class: 'result' }, 15)
+                    h('div', { class: 'result' }, this.computed.sum.value)
                 ]);
             }
         })
