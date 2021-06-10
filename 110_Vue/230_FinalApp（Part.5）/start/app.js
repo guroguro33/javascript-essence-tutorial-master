@@ -2,11 +2,14 @@ import { nodeOps } from './nodeOps.js';
 import { createVNode, patch } from './renderer.js';
 import { reactive, computed, effect } from './reactive.js';
 function createApp(args) {
-    const { data, computed: computedData, render } = args;
+    const { data, computed: computedData, methods, render } = args;
 
     const app = {};
 
     app.data = reactive(data());
+
+    app.methods = methods;
+    app.computed = {};
 
     app.computed = {};
     for(const prop in computedData) {
