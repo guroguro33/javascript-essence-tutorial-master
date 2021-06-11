@@ -2,9 +2,14 @@ import { nodeOps } from './nodeOps.js';
 import { createVNode, patch } from './renderer.js';
 import { reactive, computed, effect } from './reactive.js';
 function createApp(args) {
-    const { data, computed: computedData, render } = args;
+    const { data, computed: computedData, render, methods } = args;
 
     const app = {};
+    
+    const rawData = data();
+    const ctx = { ...rawData, ...computedData, ...methods };
+    
+    console.log(ctx);
 
     app.data = reactive(data());
 

@@ -25,6 +25,14 @@
                     return this.data.a + this.data.b;
                 },
             },
+            methods: {
+                increment(key) {
+                    this[key]++;
+                },
+                decrement(key) {
+                    this[key]--;
+                }
+            },
             render() {
                 return h('div', { class: 'container' }, [
                     h('div', { class: 'num' }, [
