@@ -1,3 +1,5 @@
+import { queueJob } from './scheduler.js';
+
 const handler = {
   get(target, key, receiver) {
     const res = Reflect.get(target, key, receiver);
@@ -17,10 +19,11 @@ function reactive(target) {
 }
 
 let activeEffect = null;
-function effect(fn, { computed = false } = {}) {
+function effect(fn, { computed = false, lazy = false } = {}) {
   try {
     activeEffect = fn;
     activeEffect.computed = computed;
+    activeEffect.lazy = lazy;
     if (computed) {
       activeEffect.dirty = true;
     }
@@ -66,7 +69,11 @@ function trigger(target, key) {
     if(effect.computed) {
       effect.dirty = true;
     } else {
-      effect();
+        if (effect.lazy) {
+            queueJob(effect);
+        } else {
+            effect();
+        }
     }
   });
 }
